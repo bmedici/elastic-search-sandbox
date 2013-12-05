@@ -1,19 +1,19 @@
-%table
-  %tr
-    %th ID
-    %th TYPE
-    %th SCORE
-    - @keys.each do |key|
-      %th= key
+%h2 Browse catalog
 
-  - @result.each do |result|
+- @result.each do |result|
+  %table.product
     %tr
       %td
-        %b= result[ES_ID]
+        .label.label-info id
+        = result[ES_ID]
+        %br
+        .label.label-info type
+        = result[ES_TYPE]
+        %br
+        .label.label-info score
+        = result[ES_SCORE]
       %td
-        %b= result[ES_TYPE]
-      %td
-        %b= result[ES_SCORE]
-      - @keys.each do |key|
-        %td
-          = result[ES_SOURCE][key]
+        - result[ES_SOURCE].each do |key, val|
+          .label.label-info=key
+          = val
+          %br

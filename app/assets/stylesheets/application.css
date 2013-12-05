@@ -13,6 +13,11 @@
  *= require_tree .
  */
 
+.product {
+	display: inline-block;
+	border: 1px solid silver;
+	
+}
 
 body {
 	padding: 0 20px;
