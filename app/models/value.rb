@@ -1,6 +1,6 @@
 class Value < ActiveRecord::Base
   belongs_to :attribute
-  has_many :product_value
+  has_many :product_values
   has_many :products, through: :product_value
   attr_accessible :value, :attribute_id
   after_save :es_update

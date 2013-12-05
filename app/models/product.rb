@@ -1,28 +1,10 @@
 require 'elasticsearch'
-
 class Product < ActiveRecord::Base
-  # include Tire::Model::Search
-  # include Tire::Model::Callbacks
 
   attr_accessible :description, :sku, :title, :visibility
   has_many :product_values
   has_many :values, through: :product_values
   before_save :es_update
-
-  # def initialize(attrs={})
-  #   self.class.property "extra" unless self.class.property_types.keys.include? "extra"
-  #   # set instance variable
-  #   instance_variable_set("@extra", self.values.inspect) 
-  #   self.values.each do |v|
-  #     attrname = v.attribute.name
-  #     attrvalue = v.value
-
-  #     # call Tire's property method if it hasn't been set explicitly
-  #     self.class.property attrname unless self.class.property_types.keys.include? attrname
-  #     # set instance variable
-  #     instance_variable_set("@#{attrname}", attrvalue) 
-  #   end
-  # end
 
   def self.rebuild
     Product.includes(:values).all.collect do |product|
