@@ -1,0 +1,24 @@
+rails g scaffold product sku:string title:string description:text visibility:boolean attrs:text
+rails g scaffold attributes name:string
+rails g scaffold values attribute:references value:string
+rails g migration products_values
+
+
+rails g scaffold variant product:references sku:string title:string visibility:boolean price:decimal 
+
+
+
+
+
+
+
+
+  	create_table :products_attributes, :id => false do |t|
+        t.references :product
+        t.references :value
+
+    end
+
+
+
+ #  serialize :attrs

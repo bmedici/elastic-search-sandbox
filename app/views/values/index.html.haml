@@ -1,0 +1,21 @@
+%h2 Listing values
+
+%table
+  %tr
+    %th Attribute
+    %th Value
+    %th
+    %th
+    %th
+
+  - @values.each do |value|
+    %tr
+      %td= value.attribute.name
+      %td= value.value
+      %td= link_to 'Show', value
+      %td= link_to 'Edit', edit_value_path(value)
+      %td= link_to 'Destroy', value, :method => :delete, :data => { :confirm => 'Are you sure?' }
+
+%br
+
+= link_to 'New Attribute value', new_value_path

@@ -1,0 +1,61 @@
+%h2 Database products
+
+%table
+  %tr
+    %th ID
+    %th Sku
+    %th Title
+    %th Description
+    %th Visibility
+    %th Attributes
+    %th
+    %th
+    %th
+
+  - @products.each do |product|
+    %tr
+      %td= product.id
+      %td= product.sku
+      %td= product.title
+      %td= product.description
+      %td= product.visibility
+      %td
+        - product.values.each do |av|
+          = av.attribute.name
+          %strong= av.value
+          %br
+
+        = product.attrs
+      %td= link_to 'Show', product
+      %td= link_to 'Edit', edit_product_path(product)
+      %td= link_to 'Destroy', product, :method => :delete, :data => { :confirm => 'Are you sure?' }
+
+%br
+= link_to 'New Product', new_product_path
+%br
+= link_to 'Re-index', rebuild_products_path
+
+
+%h2 ElasticSearch items
+
+= @status
+
+%table
+  %tr
+    %th ID
+    %th TYPE
+    %th SCORE
+    - @keys.each do |key|
+      %th= key
+
+  - @result.each do |result|
+    %tr
+      %td
+        %b= result[ES_ID]
+      %td
+        %b= result[ES_TYPE]
+      %td
+        %b= result[ES_SCORE]
+      - @keys.each do |key|
+        %td
+          = result[ES_SOURCE][key]

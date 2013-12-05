@@ -1,0 +1,19 @@
+%p
+  %b Sku:
+  = @product.sku
+%p
+  %b Title:
+  = @product.title
+%p
+  %b Description:
+  = @product.description
+%p
+  %b Visibility:
+  = @product.visibility
+%p
+  %b Attrs:
+  = @product.attrs
+
+= link_to 'Edit', edit_product_path(@product)
+\|
+= link_to 'Back', products_path

@@ -1,0 +1,19 @@
+%table
+  %tr
+    %th ID
+    %th TYPE
+    %th SCORE
+    - @keys.each do |key|
+      %th= key
+
+  - @result.each do |result|
+    %tr
+      %td
+        %b= result[ES_ID]
+      %td
+        %b= result[ES_TYPE]
+      %td
+        %b= result[ES_SCORE]
+      - @keys.each do |key|
+        %td
+          = result[ES_SOURCE][key]
