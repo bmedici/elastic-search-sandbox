@@ -7,12 +7,13 @@ gem 'haml-rails'
 gem 'seed_dump',   '0.5.3'
 gem 'quiet_assets', :group => :development
 gem 'thin'
-
-
-
-#gem 'tire'
 gem 'elasticsearch'
 gem 'elasticsearch-ruby'
+
+group :development do 
+  gem "better_errors"
+  gem "binding_of_caller"
+end
 
 group :assets do
   gem 'sass-rails',   '~> 3.2.3'
