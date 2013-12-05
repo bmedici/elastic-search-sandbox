@@ -7,12 +7,15 @@
     %th Title
     %th Description
     %th Visibility
-    %th Attributes
+    %th ATTRIBUTES
+    %th Sync
     %th
     %th
     %th
 
   - @products.each do |product|
+    - vdb = product.updated_at.to_i
+    - ves = product.es_fetch_stamp
     %tr
       %td= product.id
       %td= product.sku
@@ -24,8 +27,17 @@
           = av.attribute.name
           %strong= av.value
           %br
+      %td
+        - if (vdb == ves)
+          .label.label-info= "OK"
+          = vdb
+        - else 
+          .label.label-warning= "Out of sync"
+          %br
+          = "vdb:#{vdb}"
+          %br
+          = "ves:#{ves}"
 
-        = product.attrs
       %td= link_to 'Show', product
       %td= link_to 'Edit', edit_product_path(product)
       %td= link_to 'Destroy', product, :method => :delete, :data => { :confirm => 'Are you sure?' }

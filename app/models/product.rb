@@ -4,7 +4,7 @@ class Product < ActiveRecord::Base
   attr_accessible :description, :sku, :title, :visibility
   has_many :product_values
   has_many :values, through: :product_values
-  before_save :es_update
+  after_save :es_update
 
   def self.rebuild
     Product.includes(:values).all.collect do |product|
@@ -14,6 +14,17 @@ class Product < ActiveRecord::Base
 
   def ping
     update_attribute(:description, 'random '+rand(1000).to_s)
+  end
+
+  def es_fetch
+    # Submit update to ES
+    client = Elasticsearch::Client.new log: true
+    client.search index: 'items', type: 'item', id: self.id
+  end
+
+  def es_fetch_stamp
+    es = es_fetch
+    es['hits']['hits'].first[ES_SOURCE][ES_STAMP]
   end
 
   def es_update
@@ -33,7 +44,7 @@ class Product < ActiveRecord::Base
     end
 
     # Debug fields
-    fields['TOUCHED'] = DateTime.now.to_f
+    fields[ES_STAMP] = self.updated_at.to_i
     fields['ATTRIBUTES'] = attrs.join(', ')
     puts "es_update (#{self.id}) >> #{fields.inspect}"
 
