@@ -19,12 +19,12 @@ class Product < ActiveRecord::Base
   def es_fetch
     # Submit update to ES
     client = Elasticsearch::Client.new log: true
-    client.search index: 'items', type: 'item', id: self.id
+    client.get index: 'items', type: 'item', id: self.id
   end
 
   def es_fetch_stamp
     es = es_fetch
-    es['hits']['hits'].first[ES_SOURCE][ES_STAMP]
+    es[ES_SOURCE][ES_STAMP]
   end
 
   def es_update
