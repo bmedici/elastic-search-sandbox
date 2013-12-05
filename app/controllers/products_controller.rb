@@ -4,20 +4,19 @@ class ProductsController < ApplicationController
   def index
     # all products from db
     @products = Product.all
-
     client = Elasticsearch::Client.new log: true
 
     begin
       search = client.search index: 'items', body: {}
     rescue Exception => e
-      @result = []
-      @keys = []
-      flash[:error]= 'oh'
-      @status = "EXCEPTION #{e.class}"
+      flash[:error]= "EXCEPTION #{e.class}"
     else
-      @result = search['hits']['hits']
-      @keys = @result.first[ES_SOURCE].keys
+      @result = search['hits']['hits'] rescue []
+      @keys = @result.first[ES_SOURCE].keys rescue []
     end
+
+    @result ||= []
+    @keys ||= []
 
 
   end
