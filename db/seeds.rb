@@ -13,14 +13,6 @@ Product.create([
   { :sku => "p2", :title => "Cirages 2", :description => "random 382", :visibility => false, :attrs => "", :created_at => "2013-12-05 15:12:28", :updated_at => "2013-12-05 21:27:29" }
 ], :without_protection => true )
 
-ProductValue.create([
-  { :product_id => 2, :value_id => 3 },
-  { :product_id => 2, :value_id => 8 },
-  { :product_id => 1, :value_id => 7 },
-  { :product_id => 2, :value_id => 9 },
-  { :product_id => 1, :value_id => 12 }
-], :without_protection => true )
-
 Value.create([
   { :attribute_id => 1, :value => "bleu", :created_at => "2013-12-05 15:20:22", :updated_at => "2013-12-05 15:20:22" },
   { :attribute_id => 1, :value => "vert", :created_at => "2013-12-05 15:21:04", :updated_at => "2013-12-05 15:21:04" },
@@ -36,3 +28,10 @@ Value.create([
   { :attribute_id => 5, :value => "ringard", :created_at => "2013-12-05 21:51:34", :updated_at => "2013-12-05 21:51:34" }
 ], :without_protection => true )
 
+ProductValue.create([
+  { :product_id => 2, :value_id => 3 },
+  { :product_id => 2, :value_id => 8 },
+  { :product_id => 1, :value_id => 7 },
+  { :product_id => 2, :value_id => 9 },
+  { :product_id => 1, :value_id => 12 }
+], :without_protection => true )
