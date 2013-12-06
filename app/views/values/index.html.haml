@@ -2,7 +2,7 @@
 
 %table
   %tr
-    %th Attribute
+    %th Property
     %th Value
     %th
     %th
@@ -10,7 +10,7 @@
 
   - @values.each do |value|
     %tr
-      %td= value.attribute.name
+      %td= value.property.name
       %td= value.value
       %td= link_to 'Show', value
       %td= link_to 'Edit', edit_value_path(value)
@@ -18,4 +18,4 @@
 
 %br
 
-= link_to 'New Attribute value', new_value_path
+= link_to 'New value', new_value_path

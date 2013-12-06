@@ -44,7 +44,7 @@ class ValuesController < ApplicationController
 
     respond_to do |format|
       if @value.save
-        format.html { redirect_to values_path, notice: 'Attribute value was successfully created.' }
+        format.html { redirect_to values_path, notice: 'Value was successfully created.' }
         format.json { render json: @value, status: :created, location: @value }
       else
         format.html { render action: "new" }
@@ -60,7 +60,7 @@ class ValuesController < ApplicationController
 
     respond_to do |format|
       if @value.update_attributes(params[:value])
-        format.html { redirect_to values_path, notice: 'Attribute value was successfully updated.' }
+        format.html { redirect_to values_path, notice: 'Value was successfully updated.' }
         format.json { head :no_content }
       else
         format.html { render action: "index" }

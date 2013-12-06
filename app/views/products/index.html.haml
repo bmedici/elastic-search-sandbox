@@ -7,7 +7,7 @@
     %th Title
     %th Description
     %th Visibility
-    %th ATTRIBUTES
+    %th PROPS
     %th Sync
     %th
     %th
@@ -23,9 +23,9 @@
       %td= product.description
       %td= product.visibility
       %td
-        - product.values.each do |av|
-          = av.attribute.name
-          %strong= av.value
+        - product.values.each do |pv|
+          = pv.property.name
+          %strong= pv.value
           %br
       %td
         - if (vdb == ves)
@@ -48,7 +48,6 @@
 
 %h2 ElasticSearch items
 
-= @status
 
 %table
   %tr

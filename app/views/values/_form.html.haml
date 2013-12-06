@@ -7,8 +7,8 @@
           %li= msg
 
   .field
-    = f.label :attribute
-    = f.collection_select :attribute_id, Attribute.all, :id, :name
+    = f.label :property
+    = f.collection_select :property_id, Property.all, :id, :name
   .field
     = f.label :value
     = f.text_field :value

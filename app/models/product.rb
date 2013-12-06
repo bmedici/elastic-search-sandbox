@@ -36,16 +36,22 @@ class Product < ActiveRecord::Base
     fields[:title] = self.title
     fields[:description] = self.description
 
-    # Attribute values
-    values.includes(:attribute).all.each do |v|
-      name = v.attribute.name
+    # Initialize properties values with NIL
+    Property.order(:name).all do |prop|
+      fields["a_#{prop.name}"] = nil
+    end
+
+    # Set the current value if found
+    attrs = values.includes(:property).all.each do |v|
+      name = v.property.name
       fields["a_#{name}"] = v.value
       attrs << name
     end
 
     # Debug fields
     fields[ES_STAMP] = self.updated_at.to_i
-    fields['ATTRIBUTES'] = attrs.join(', ')
+    fields[ES_ATTR] = attrs.join(', ')
+    #fields[ES_DEBUG] = names.inspect
     puts "es_update (#{self.id}) >> #{fields.inspect}"
 
     # Submit update to ES

@@ -1,6 +1,6 @@
 Elastic::Application.routes.draw do
   resources :values
-  resources :attributes
+  resources :properties
   resources :products do
     collection do
       get :rebuild

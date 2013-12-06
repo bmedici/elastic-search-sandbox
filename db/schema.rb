@@ -14,15 +14,15 @@
 ActiveRecord::Schema.define(:version => 20131205150848) do
 
   create_table "values", :force => true do |t|
-    t.integer  "attribute_id"
+    t.integer  "property_id"
     t.string   "value"
     t.datetime "created_at",   :null => false
     t.datetime "updated_at",   :null => false
   end
 
-  add_index "values", ["attribute_id"], :name => "index_values_on_attribute_id"
+  add_index "values", ["property_id"], :name => "index_values_on_property_id"
 
-  create_table "attributes", :force => true do |t|
+  create_table "properties", :force => true do |t|
     t.string   "name"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
