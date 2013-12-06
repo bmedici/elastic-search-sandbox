@@ -6,25 +6,6 @@ class ProductsController < ApplicationController
     @products = Product.all
     client = Elasticsearch::Client.new log: true
 
-    begin
-      search = client.search index: 'items', body: {}
-    rescue Exception => e
-      flash[:error]= "EXCEPTION #{e.class}"
-    else
-      @result = search['hits']['hits'] rescue []
-      @keys = @result.map{ |r| r[ES_SOURCE].keys }.flatten.uniq rescue []
-    end
-
-    @result ||= []
-    @keys ||= []
-
-
-  end
-
-  def rebuild
-    reply = Product.rebuild
-
-    redirect_to products_path, notice: 'Index rebuilt: '+reply.inspect 
   end
 
   # GET /products/1

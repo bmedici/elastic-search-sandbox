@@ -1,0 +1,14 @@
+- @result.each do |result|
+  .well.product
+    - result[ES_SOURCE].delete ES_STAMP
+    - result[ES_SOURCE].delete ES_ATTR
+
+    .label.label-default= result[ES_SCORE]
+    .label.label-info= result[ES_TYPE]
+    .label.label-primary= result[ES_ID]
+    %br
+
+    - result[ES_SOURCE].each do |key, val|
+      %b=key
+      = truncate(val.to_s, length: 30, omission: '...')
+      %br
