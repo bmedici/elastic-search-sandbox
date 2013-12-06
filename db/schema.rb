@@ -13,14 +13,18 @@
 
 ActiveRecord::Schema.define(:version => 20131205150848) do
 
-  create_table "values", :force => true do |t|
-    t.integer  "property_id"
-    t.string   "value"
-    t.datetime "created_at",   :null => false
-    t.datetime "updated_at",   :null => false
+  create_table "product_values", :id => false, :force => true do |t|
+    t.integer "product_id"
+    t.integer "value_id"
   end
 
-  add_index "values", ["property_id"], :name => "index_values_on_property_id"
+  create_table "products", :force => true do |t|
+    t.string   "sku"
+    t.string   "title"
+    t.text     "description"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+  end
 
   create_table "properties", :force => true do |t|
     t.string   "name"
@@ -28,18 +32,13 @@ ActiveRecord::Schema.define(:version => 20131205150848) do
     t.datetime "updated_at", :null => false
   end
 
-  create_table "products", :force => true do |t|
-    t.string   "sku"
-    t.string   "title"
-    t.text     "description"
-    t.text     "attrs"
+  create_table "values", :force => true do |t|
+    t.integer  "property_id"
+    t.string   "value"
     t.datetime "created_at",  :null => false
     t.datetime "updated_at",  :null => false
   end
 
-  create_table "products_values", :id => false, :force => true do |t|
-    t.integer "product_id"
-    t.integer "value_id"
-  end
+  add_index "values", ["property_id"], :name => "index_values_on_property_id"
 
 end
