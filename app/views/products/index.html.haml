@@ -6,7 +6,6 @@
     %th Sku
     %th Title
     %th Description
-    %th Visibility
     %th PROPS
     %th Sync
     %th
@@ -21,7 +20,6 @@
       %td= product.sku
       %td= product.title
       %td= product.description
-      %td= product.visibility
       %td
         - product.values.each do |pv|
           = pv.property.name

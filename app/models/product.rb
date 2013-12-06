@@ -1,7 +1,7 @@
 require 'elasticsearch'
 class Product < ActiveRecord::Base
 
-  attr_accessible :description, :sku, :title, :visibility
+  attr_accessible :description, :sku, :title
   has_many :product_values
   has_many :values, through: :product_values
   after_save :es_update

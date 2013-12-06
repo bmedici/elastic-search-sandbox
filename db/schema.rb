@@ -32,7 +32,6 @@ ActiveRecord::Schema.define(:version => 20131205150848) do
     t.string   "sku"
     t.string   "title"
     t.text     "description"
-    t.boolean  "visibility"
     t.text     "attrs"
     t.datetime "created_at",  :null => false
     t.datetime "updated_at",  :null => false
