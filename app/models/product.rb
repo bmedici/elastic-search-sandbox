@@ -28,7 +28,7 @@ class Product < ActiveRecord::Base
   end
 
   def es_update
-    puts "es_update (#{self.id}) ---------------------------------------------------"
+    puts "es_update (#{self.id}) ---------------------------------------------------" if DEBUG==true
     fields = {}
     attrs = []
 
@@ -43,7 +43,10 @@ class Product < ActiveRecord::Base
 
     # Set the current value if found
     values.includes(:property).all.each do |v|
+      # Access each property of this product
       p = v.property
+      next if p.nil?
+
       fields["p#{p.id}"] = v.value
       attrs << p.name
     end
@@ -52,13 +55,13 @@ class Product < ActiveRecord::Base
     fields[ES_STAMP] = self.updated_at.to_i
     fields[ES_ATTR] = attrs.join(', ')
     #fields[ES_DEBUG] = names.inspect
-    puts "es_update (#{self.id}) >> #{fields.inspect}"
+    puts "es_update (#{self.id}) >> #{fields.inspect}" if DEBUG==true
 
     # Submit update to ES
     client = Elasticsearch::Client.new log: true
     esreply = client.index index: 'items', type: 'item', id: self.id, body: fields
 
-    puts "es_update (#{self.id}) << #{esreply.inspect}"
+    puts "es_update (#{self.id}) << #{esreply.inspect}" if DEBUG==true
 
     return esreply
   end

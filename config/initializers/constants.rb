@@ -9,3 +9,6 @@ ES_DEBUG = '_debug'
 
 ES_LIMIT_CATALOG = 200
 ES_LIMIT_TABLE = 200
+
+DEBUG = false
+
