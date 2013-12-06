@@ -6,19 +6,15 @@ rails g migration products_values
 
 rails g scaffold variant product:references sku:string title:string visibility:boolean price:decimal 
 
+	create_table :products_attributes, :id => false do |t|
+    t.references :product
+    t.references :value
 
-
-
-
-
-
-
-  	create_table :products_attributes, :id => false do |t|
-        t.references :product
-        t.references :value
-
-    end
-
+end
 
 
  #  serialize :attrs
+
+
+
+ rake db:seed:dump WITH_ID=1
