@@ -24,9 +24,12 @@
       %td
         %small
           - product.values.each do |pv|
-            %strong= pv.property.name
-            = pv.value
-            = "&nbsp;".html_safe
+            - if pv.property.nil?
+              .label.label-danger Value without property: #{pv.id}
+            - else
+              %strong= pv.property.name
+              = pv.value
+            %br
       %td
         - if (vdb == ves)
           .label.label-success= "OK"
