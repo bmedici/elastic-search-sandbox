@@ -12,7 +12,7 @@ class ProductsController < ApplicationController
       flash[:error]= "EXCEPTION #{e.class}"
     else
       @result = search['hits']['hits'] rescue []
-      @keys = @result.first[ES_SOURCE].keys rescue []
+      @keys = @result.map{ |r| r[ES_SOURCE].keys }.flatten.uniq rescue []
     end
 
     @result ||= []

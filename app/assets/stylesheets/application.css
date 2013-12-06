@@ -16,7 +16,7 @@
 .product {
 	display: inline-block;
 	border: 1px solid silver;
-	
+
 }
 
 body {
@@ -29,6 +29,6 @@ table {
 table td {
 	padding: 2px 4px;
 	border: 1px solid silver;
-	min-width: 70px;
+	min-width: 50px;
 	vertical-align: top;
 }
