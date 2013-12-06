@@ -8,27 +8,34 @@
  * You're free to add application-wide styles to this file and they'll appear at the top of the
  * compiled file, but it's generally better to create a new file per style scope.
  *
- *= require twitter/bootstrap
+ *  = require twitter/bootstrap
  *= require_self
  *= require_tree .
  */
 
-.product {
-	display: inline-block;
-	border: 1px solid silver;
+ .well {
+  margin-bottom: 0 !important;
+  }
 
-}
+.product {
+  display: inline-block;
+  border: 1px solid silver;
+  width: 200px;
+  height: 200px;
+  float: left;
+  margin: 6px;
+  }
 
 body {
-	padding: 0 20px;
-}
+  padding: 0 20px;
+  }
+
 table {
-	border-collapse: collapse;
-}
+  border-collapse: collapse;
+  }
 
 table td {
-	padding: 2px 4px;
-	border: 1px solid silver;
-	min-width: 50px;
-	vertical-align: top;
-}
+  padding: 2px 4px;
+  border: 1px solid silver;
+  vertical-align: top;
+  }

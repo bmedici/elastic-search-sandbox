@@ -4,9 +4,9 @@
   %tr
     %th ID
     %th Sku
-    %th Title
-    %th Description
-    %th PROPS
+    %th{width: 150} Title
+    %th{width: 200} Description
+    %th{width: 450} PROPS
     %th Sync
     %th
     %th
@@ -19,12 +19,14 @@
       %td= product.id
       %td= product.sku
       %td= product.title
-      %td= product.description
       %td
-        - product.values.each do |pv|
-          = pv.property.name
-          %strong= pv.value
-          %br
+        %small= truncate(product.description, length: 35, omission: ' [...]')
+      %td
+        %small
+          - product.values.each do |pv|
+            %strong= pv.property.name
+            = pv.value
+            = "&nbsp;".html_safe
       %td
         - if (vdb == ves)
           .label.label-success= "OK"
@@ -44,25 +46,3 @@
 = link_to 'New Product', new_product_path
 
 
-%h2 ElasticSearch items
-
-
-%table
-  %tr
-    %th ID
-    %th TYPE
-    %th SCORE
-    - @keys.each do |key|
-      %th= key
-
-  - @result.each do |result|
-    %tr
-      %td
-        %b= result[ES_ID]
-      %td
-        %b= result[ES_TYPE]
-      %td
-        %b= result[ES_SCORE]
-      - @keys.each do |key|
-        %td
-          = result[ES_SOURCE][key]

@@ -13,20 +13,23 @@
     .well
       %h1 ElasticSearch sandbox
 
-      = link_to 'products', products_path
-      = link_to 'properties', properties_path
-      = link_to 'values', values_path
-      = " - "
-      = link_to 're-index', rebuild_products_path
-      = link_to 'catalog', catalog_path
+      .row
+        .col-md-3
+          %b database
+          = link_to 'products', products_path
+          = link_to 'properties', properties_path
+          = link_to 'values', values_path
 
-      - flash.each do |type, message|
-        .alert{ class: type }
-          %a.close{href: "#", 'data-dismiss' => 'alert'} ×
-          %strong= type.upcase
-          %p= message
+        .col-md-3
+          %b catalog
+          = link_to 'browse', browse_catalog_path
+          = link_to 'list', list_catalog_path
+          = link_to 'rebuild', rebuild_catalog_path
 
-    
+        .col-md-6
+          - flash.each do |type, message|
+            .flash{ class: type }
+              %strong= type.upcase
+              %p= message
 
     .content= yield
-
