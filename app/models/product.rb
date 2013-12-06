@@ -7,7 +7,8 @@ class Product < ActiveRecord::Base
   after_save :es_update
 
   def self.rebuild
-    Product.includes(:values, :product_values).all.collect do |product|
+    Product.includes({:values => :product_values}).all.collect do |product|
+    # Product.includes(:values, :product_values).all.collect do |product|
       product.es_update
     end
   end
@@ -58,7 +59,7 @@ class Product < ActiveRecord::Base
     puts "es_update (#{self.id}) >> #{fields.inspect}" if DEBUG==true
 
     # Submit update to ES
-    client = Elasticsearch::Client.new log: true
+    client = Elasticsearch::Client.new log: false
     esreply = client.index index: 'items', type: 'item', id: self.id, body: fields
 
     puts "es_update (#{self.id}) << #{esreply.inspect}" if DEBUG==true
