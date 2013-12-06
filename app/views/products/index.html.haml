@@ -25,7 +25,7 @@
         %small
           - product.values.each do |pv|
             - if pv.property.nil?
-              .label.label-danger Value without property: #{pv.id}
+              .label.label-danger Value without property: #{pv.inspect}
             - else
               %strong= pv.property.name
               = pv.value
