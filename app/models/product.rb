@@ -7,7 +7,7 @@ class Product < ActiveRecord::Base
   after_save :es_update
 
   def self.rebuild
-    Product.includes(:values).all.collect do |product|
+    Product.includes(:values, :product_values).all.collect do |product|
       product.es_update
     end
   end
@@ -36,16 +36,16 @@ class Product < ActiveRecord::Base
     fields[:title] = self.title
     fields[:description] = self.description
 
-    # Initialize properties values with NIL
-    Property.order(:name).all do |prop|
-      fields["a_#{prop.name}"] = nil
-    end
+    # Initialize properties values with NIL > no need as unmentionned properties ar just NIL'ed
+    # Property.order(:name).all do |prop|
+    #   fields["a_#{prop.name}"] = nil
+    # end
 
     # Set the current value if found
-    attrs = values.includes(:property).all.each do |v|
-      name = v.property.name
-      fields["a_#{name}"] = v.value
-      attrs << name
+    values.includes(:property).all.each do |v|
+      p = v.property
+      fields["p#{p.id}"] = v.value
+      attrs << p.name
     end
 
     # Debug fields
