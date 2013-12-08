@@ -1,13 +1,7 @@
 class Product < ActiveRecord::Base
-
   attr_accessible :description, :sku, :title
 
-  # has_many :product_values
-  # has_many :values, through: :product_values
-  # has_many :properties, through: :values
-
   has_many :product_properties
-  
   has_many :properties, through: :product_properties
   has_many :values, through: :product_properties
 

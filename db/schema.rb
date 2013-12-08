@@ -24,15 +24,6 @@ ActiveRecord::Schema.define(:version => 20131207174326) do
   add_index "product_properties", ["property_id"], :name => "index_product_properties_on_property_id"
   add_index "product_properties", ["value_id"], :name => "index_product_properties_on_value_id"
 
-  create_table "product_values", :id => false, :force => true do |t|
-    t.integer "product_id"
-    t.integer "value_id"
-    t.string  "value"
-  end
-
-  add_index "product_values", ["product_id"], :name => "index_product_values_on_product_id"
-  add_index "product_values", ["value_id"], :name => "index_product_values_on_value_id"
-
   create_table "products", :force => true do |t|
     t.string   "sku"
     t.string   "title"
