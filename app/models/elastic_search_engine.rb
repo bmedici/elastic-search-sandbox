@@ -2,15 +2,7 @@ require 'elasticsearch'
 
 class ElasticSearchEngine
 
-  def self.rebuild_each 
-    log :rebuild_each
-    
-    Product.includes({:values => :product_values}).limit(ES_LIMIT_REBUILD).collect do |product|
-      push_product product
-    end
-  end
-
-  def self.rebuild_bulk(limit = ES_LIMIT_REBUILD)
+  def self.rebuild(limit = ES_LIMIT_REBUILD)
     # Init
     operations = []
     log :rebuild_bulk
@@ -45,6 +37,37 @@ class ElasticSearchEngine
     client = Elasticsearch::Client.new log: false
     #return operations
     esreply = client.bulk index: ES_INDEX, type: ES_TYPE, refresh: false, body: operations
+  end
+
+
+  def self.get_product(product_id)
+    # Submit query to ES
+    client = Elasticsearch::Client.new log: true
+    return client.get_source index: ES_INDEX, type: ES_TYPE, id: product_id #rescue nil
+  end
+  
+  def self.get_products(ids)
+    # Submit query to ES
+    client = Elasticsearch::Client.new log: true
+    reply = client.mget index: ES_INDEX, type: ES_TYPE, body: { ids: ids }
+
+    # If response is weird, just exit
+    return nil if reply['docs'].nil?
+
+    # Parse reply and keep only found products
+    items = {}
+    reply['docs'].each do |p|
+      # If element was not found or caused error, just skip it
+      next unless p[ES_EXISTS] != false && p[ES_ERROR].nil?
+
+      # Extract ID from p
+      id = p[ES_ID].to_i
+
+      # Keep ES_SOURCE part of reply
+      items[id] = p[ES_SOURCE]
+    end
+
+    return items
   end
 
 

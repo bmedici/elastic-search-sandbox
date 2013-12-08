@@ -30,24 +30,14 @@ class Product < ActiveRecord::Base
     return fields
   end
 
-  def es_fetch
-    # Submit update to ES
-    client = Elasticsearch::Client.new log: true
-    reply = client.get index: 'items', type: 'item', id: self.id rescue nil
-
-    # If not found, return nil
-    #return nil if reply['exists'] == false
-    return reply
-  end
-
   def es_fetch_stamp
-    es = es_fetch
+    es_product = ElasticSearchEngine.get_product(self.id)
     
     # If object not found in ES, just retunr nil
-    return nil if es.nil? || es[ES_SOURCE].nil?
+    return nil if es_product.nil?
 
     # Otherwise return stamp
-    es[ES_SOURCE][ES_STAMP]
+    es_product[ES_STAMP]
   end
 
   def es_update

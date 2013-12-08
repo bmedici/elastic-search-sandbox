@@ -6,6 +6,10 @@ class ProductsController < ApplicationController
     @products = Product.limit(ES_LIMIT_TABLE).all
     client = Elasticsearch::Client.new log: true
 
+    # Collect ID's and get status in ES
+    product_ids = @products.collect(&:id)
+    @es_products = ElasticSearchEngine.get_products product_ids
+
     # Info message
     flash[:notice] = "Retrieved #{@products.size} items (limited to #{ES_LIMIT_TABLE})"
   end
