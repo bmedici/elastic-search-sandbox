@@ -52,7 +52,7 @@ class ElasticSearchEngine
     reply = client.mget index: ES_INDEX, type: ES_TYPE, body: { ids: ids }
 
     # If response is weird, just exit
-    return nil if reply['docs'].nil?
+    return [] if reply['docs'].nil?
 
     # Parse reply and keep only found products
     items = {}

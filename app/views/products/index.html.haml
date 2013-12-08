@@ -14,7 +14,10 @@
 
   - @products.each do |product|
     - vdb = product.updated_at.to_i
-    - ves = @es_products[product.id][ES_STAMP]
+    - if @es_products[product.id].is_a? Hash 
+      - ves = @es_products[product.id][ES_STAMP]
+    - else
+      - ves = nil
     %tr
       %td= product.id
       %td= product.sku
