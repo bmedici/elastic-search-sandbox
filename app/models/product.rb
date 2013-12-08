@@ -5,9 +5,6 @@ class Product < ActiveRecord::Base
   has_many :properties, through: :product_properties
   has_many :values, through: :product_properties
 
-  # has_many :product_values
-  # has_many :values, through: :product_values
-
   after_save :es_update
 
   def ping
