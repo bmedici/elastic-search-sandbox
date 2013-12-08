@@ -6,5 +6,8 @@ class CreateProductProperties < ActiveRecord::Migration
         t.references :value
         t.string :other
     end
+  	add_index :product_properties, :product_id
+  	add_index :product_properties, :property_id
+  	add_index :product_properties, :value_id
   end
 end
