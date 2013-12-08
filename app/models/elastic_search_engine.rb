@@ -38,6 +38,9 @@ class ElasticSearchEngine
       operations << { index: { _id: product.id, data: fields }}
     end
 
+    # Skip ES if no operations collected
+    return if operations.size.zero?
+
     # Submit update to ES
     client = Elasticsearch::Client.new log: false
     #return operations
