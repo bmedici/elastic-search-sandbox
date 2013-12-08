@@ -1,5 +1,3 @@
-= "limited to #{ES_LIMIT_TABLE} items"
-
 %table
   %tr
     %th ID
@@ -19,3 +17,5 @@
       - @keys.each do |key|
         %td
           = truncate(result[ES_SOURCE][key].to_s, length: 80, omission: ' [...]')
+
+%br

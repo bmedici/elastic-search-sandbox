@@ -13,21 +13,35 @@
  *= require_tree .
  */
 
- .well {
-  margin-bottom: 0 !important;
+
+.topbar {
+  background-color: #eee;
+  padding: 20px;
+  border-bottom: 1px solid silver;
+  /*margin-bottom: 20px;*/
+  }
+
+.content {
+  padding: 20px;
   }
 
 .product {
   display: inline-block;
-  border: 1px solid silver;
-  width: 200px;
-  height: 200px;
+  border: 1px solid #ddd;
+  width: 300px;
   float: left;
-  margin: 6px;
+  margin: 0 10px 10px 0;
+  padding: 30px;
+  box-shadow: 2px 1px 2px #eee;
+  }
+
+.product .properties {
+  font-size: 0.8em;
+  margin-top: 10px
   }
 
 body {
-  padding: 0 20px;
+  padding: 0;
   }
 
 table {

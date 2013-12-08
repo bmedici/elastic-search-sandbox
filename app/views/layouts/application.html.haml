@@ -10,26 +10,32 @@
 
   %body
 
-    .well
+    .topbar
       %h1 ElasticSearch sandbox
 
       .row
-        .col-md-3
-          %b database
-          = link_to 'products', products_path
-          = link_to 'properties', properties_path
-          = link_to 'values', values_path
+        .col-md-2
+          Database
+          %br
+          .btn-group
+            = link_to 'products', products_path, class: 'btn btn-default'
+            = link_to 'properties', properties_path, class: 'btn btn-default'
+            = link_to 'values', values_path, class: 'btn btn-default'
 
         .col-md-3
-          %b catalog
-          = link_to 'browse', browse_catalog_path
-          = link_to 'list', list_catalog_path
-          = link_to 'rebuild', rebuild_catalog_path
+          Catalog
+          %br
+          .btn-group
+            = link_to 'browse', browse_catalog_path, class: 'btn btn-default'
+            = link_to 'list', list_catalog_path, class: 'btn btn-default'
+            = link_to 'rebuild-each', rebuild_each_path, class: 'btn btn-default'
+            = link_to 'rebuild-bulk', rebuild_path, class: 'btn btn-default'
 
-        .col-md-6
+        .col-md-7
           - flash.each do |type, message|
             .flash{ class: type }
               %strong= type.upcase
               %p= message
 
-    .content= yield
+    .content
+      = yield

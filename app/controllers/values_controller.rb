@@ -2,7 +2,7 @@ class ValuesController < ApplicationController
   # GET /values
   # GET /values.json
   def index
-    @values = Value.all
+    @values = Value.order(:property_id).all
 
     respond_to do |format|
       format.html # index.html.erb
