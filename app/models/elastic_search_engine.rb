@@ -44,7 +44,7 @@ class ElasticSearchEngine
     # Submit update to ES
     client = Elasticsearch::Client.new log: false
     #return operations
-    esreply = client.bulk index: 'items', type: 'bulkitem', refresh: false, body: operations
+    esreply = client.bulk index: ES_INDEX, type: ES_TYPE, refresh: false, body: operations
   end
 
 
@@ -64,7 +64,7 @@ class ElasticSearchEngine
     # Submit update to ES
     client = Elasticsearch::Client.new log: false
     log :push_product, "(#{product.id}) >> #{fields.inspect}"
-    esreply = client.index index: 'items', type: 'item', id: product.id, body: fields
+    esreply = client.index index: ES_INDEX, type: ES_TYPE, id: product.id, body: fields
 
     log :push_product, "(#{product.id}) << #{esreply.inspect}"
 

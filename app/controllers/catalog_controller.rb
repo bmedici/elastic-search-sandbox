@@ -3,7 +3,7 @@ class CatalogController < ApplicationController
   def browse
     client = Elasticsearch::Client.new log: false
 
-    search = client.search index: 'items', body: {}, size: ES_LIMIT_CATALOG
+    search = client.search index: ES_INDEX, body: {}, size: ES_LIMIT_CATALOG
     @result = search['hits']['hits']
     @keys = @result.first[ES_SOURCE].keys
   end
@@ -12,7 +12,7 @@ class CatalogController < ApplicationController
     client = Elasticsearch::Client.new log: false
 
   	begin
-      search = client.search index: 'items', body: {}, size: ES_LIMIT_TABLE
+      search = client.search index: ES_INDEX, body: {}, size: ES_LIMIT_TABLE
     rescue Exception => e
       flash[:error]= "EXCEPTION #{e.class}"
     else
@@ -23,7 +23,7 @@ class CatalogController < ApplicationController
     @keys ||= []
 
     # Info message
-    flash[:notice] = "Retrieved #{@result.size} items (limited to #{ES_LIMIT_TABLE})"
+    flash[:notice] = "Retrieved #{@result.size} #{ES_INDEX} (limited to #{ES_LIMIT_TABLE})"
   end
 
   def rebuild
