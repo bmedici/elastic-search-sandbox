@@ -14,7 +14,7 @@
       %h1 ElasticSearch sandbox
 
       .row
-        .col-md-2
+        .col-md-3
           Database
           %br
           .btn-group
@@ -28,10 +28,9 @@
           .btn-group
             = link_to 'browse', browse_catalog_path, class: 'btn btn-default'
             = link_to 'list', list_catalog_path, class: 'btn btn-default'
-            = link_to 'rebuild-each', rebuild_each_path, class: 'btn btn-default'
-            = link_to 'rebuild-bulk', rebuild_path, class: 'btn btn-default'
+            = link_to 'bulk-rebuild', rebuild_path, class: 'btn btn-default'
 
-        .col-md-7
+        .col-md-6
           - flash.each do |type, message|
             .flash{ class: type }
               %strong= type.upcase

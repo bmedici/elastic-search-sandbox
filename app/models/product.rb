@@ -19,7 +19,7 @@ class Product < ActiveRecord::Base
       fields = {}
       fields[ES_STAMP] = self.updated_at.to_i
       fields[:title] = self.title
-      #fields[:description] = self.description
+      fields[:description] = self.description[0..50]
 
       # Handle properties if any
       props.each do |pp|

@@ -12,9 +12,46 @@ rails g scaffold variant product:references sku:string title:string visibility:b
 
 end
 
-
- #  serialize :attrs
-
+rake db:seed:dump WITH_ID=1 MAX=100 SKIP_CALLBACKS=1
 
 
- rake db:seed:dump WITH_ID=1
+TRUNCATE elastic_development.`values`;
+INSERT INTO elastic_development.`values`
+	(id, property_id, `value`, updated_at, created_at)
+SELECT
+	id, property_id, `value`, updated_at, created_at
+FROM lizetleo.property_values
+
+
+TRUNCATE elastic_development.properties;
+INSERT INTO elastic_development.properties
+	(id, name, updated_at, created_at)
+SELECT
+	id, title, updated_at, created_at
+FROM lizetleo.properties
+
+
+TRUNCATE elastic_development.products;
+INSERT INTO elastic_development.products
+	(id, sku, title, description, updated_at, created_at)
+SELECT
+	id, sku, title, description, updated_at, created_at
+FROM lizetleo.products
+
+# La table n'existe plus !
+TRUNCATE elastic_development.product_values;
+INSERT INTO elastic_development.product_values
+	(product_id, value_id)
+SELECT
+	product_id, attribute_value_id
+FROM lizetleo.product_attribute_values
+
+
+
+SELECT product_properties.*, `values`.`value` FROM product_properties
+LEFT JOIN `values`
+on `values`.id = product_properties.value_id
+
+WHERE product_id=1
+
+

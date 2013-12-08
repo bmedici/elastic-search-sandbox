@@ -1,18 +1,15 @@
 class CatalogController < ApplicationController
+  before_filter :connect_elastic_search, only: [:browse, :list]
 
   def browse
-    client = Elasticsearch::Client.new log: false
-
-    search = client.search index: ES_INDEX, body: {}, size: ES_LIMIT_CATALOG
+    search = @client.search index: ES_INDEX, body: {}, size: ES_LIMIT_CATALOG
     @result = search['hits']['hits']
     @keys = @result.first[ES_SOURCE].keys
   end
 
   def list
-    client = Elasticsearch::Client.new log: false
-
   	begin
-      search = client.search index: ES_INDEX, body: {}, size: ES_LIMIT_TABLE
+      search = @client.search index: ES_INDEX, body: {}, size: ES_LIMIT_TABLE
     rescue Exception => e
       flash[:error]= "EXCEPTION #{e.class}"
     else
@@ -27,15 +24,17 @@ class CatalogController < ApplicationController
   end
 
   def rebuild
-    @reply = ElasticSearchEngine.rebuild_bulk
-    #render text: "<pre>#{reply.to_yaml}</pre>" and return
-    #redirect_to products_path, notice: "Index rebuilt for #{reply.size} entries"
+    d1 = DateTime.now.to_f
+    @reply = ElasticSearchEngine.rebuild
+    d2 = DateTime.now.to_f
+    time = (d2 - d1)
+    flash[:notice]= "Rebuild took #{time.round(2)} seconds"
   end
 
-  def rebuild_each
-    reply = ElasticSearchEngine.rebuild_each
-    #render :text => reply.collect{ |u| u["_id"] } and return
-    redirect_to products_path, notice: "Index rebuilt for #{reply.size} entries"
+  protected
+
+  def connect_elastic_search
+    @client = Elasticsearch::Client.new log: false
   end
 
 end
