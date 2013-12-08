@@ -14,7 +14,7 @@
 
   - @products.each do |product|
     - vdb = product.updated_at.to_i
-    - ves = product.es_fetch_stamp
+    - ves = @es_products[product.id][ES_STAMP]
     %tr
       %td= product.id
       %td= product.sku
@@ -23,13 +23,17 @@
         %small= truncate(product.description, length: 35, omission: ' [...]')
       %td
         %small
-          - product.values.each do |pv|
-            - if pv.property.nil?
-              .label.label-danger Value #{pv.id} without property
+          - product.product_properties.each do |pp|
+            -# if pv.property.nil?
+            -#.label.label-warning Value #{pv.id} without property
+            -# else
+            %b= pp.property.name
+            - if pp.value.nil?
+              %u= pp.other
             - else
-              %strong= pv.property.name
-              = pv.value
-            %br
+              = pp.value.value
+
+            &nbsp;
       %td
         - if (vdb == ves)
           .label.label-success= "OK"
