@@ -11,12 +11,27 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131205150848) do
+ActiveRecord::Schema.define(:version => 20131207231550) do
+
+  create_table "product_properties", :id => false, :force => true do |t|
+    t.integer "product_id"
+    t.integer "property_id"
+    t.integer "value_id"
+    t.string  "other"
+  end
+
+  add_index "product_properties", ["product_id"], :name => "index_product_properties_on_product_id"
+  add_index "product_properties", ["property_id"], :name => "index_product_properties_on_property_id"
+  add_index "product_properties", ["value_id"], :name => "index_product_properties_on_value_id"
 
   create_table "product_values", :id => false, :force => true do |t|
     t.integer "product_id"
     t.integer "value_id"
+    t.string  "value"
   end
+
+  add_index "product_values", ["product_id"], :name => "index_product_values_on_product_id"
+  add_index "product_values", ["value_id"], :name => "index_product_values_on_value_id"
 
   create_table "products", :force => true do |t|
     t.string   "sku"

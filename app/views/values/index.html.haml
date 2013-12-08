@@ -10,7 +10,14 @@
 
   - @values.each do |value|
     %tr
-      %td= value.property.name
+      %td
+        - if value.property.nil?
+          .label.label-danger Value #{value.id} without property
+        - else
+          = value.property.name
+        %br
+
+      
       %td= value.value
       %td= link_to 'Show', value
       %td= link_to 'Edit', edit_value_path(value)

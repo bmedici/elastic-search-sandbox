@@ -1,70 +1,66 @@
-require 'elasticsearch'
 class Product < ActiveRecord::Base
 
   attr_accessible :description, :sku, :title
-  has_many :product_values
-  has_many :values, through: :product_values
-  after_save :es_update
 
-  def self.rebuild
-    Product.includes({:values => :product_values}).all.collect do |product|
-    # Product.includes(:values, :product_values).all.collect do |product|
-      product.es_update
-    end
-  end
+  # has_many :product_values
+  # has_many :values, through: :product_values
+  # has_many :properties, through: :values
+
+  has_many :product_properties
+  
+  has_many :properties, through: :product_properties
+  has_many :values, through: :product_properties
+
+  # has_many :product_values
+  # has_many :values, through: :product_values
+
+  after_save :es_update
 
   def ping
     update_attribute(:description, 'random '+rand(1000).to_s)
   end
 
+  def es_fields param1
+      # Props can be a grouped array or a query result
+      props = param1.to_a
+
+      # Common and debug fields
+      fields = {}
+      fields[ES_STAMP] = self.updated_at.to_i
+      fields[:title] = self.title
+      #fields[:description] = self.description
+
+      # Handle properties if any
+      props.each do |pp|
+        #puts "- #{pp.inspect}"
+        fields["p#{pp.property_id}"] = pp[:fvalue]
+      end
+
+    return fields
+  end
+
   def es_fetch
     # Submit update to ES
     client = Elasticsearch::Client.new log: true
-    client.get index: 'items', type: 'item', id: self.id
+    reply = client.get index: 'items', type: 'item', id: self.id rescue nil
+
+    # If not found, return nil
+    #return nil if reply['exists'] == false
+    return reply
   end
 
   def es_fetch_stamp
     es = es_fetch
+    
+    # If object not found in ES, just retunr nil
+    return nil if es.nil? || es[ES_SOURCE].nil?
+
+    # Otherwise return stamp
     es[ES_SOURCE][ES_STAMP]
   end
 
   def es_update
-    puts "es_update (#{self.id}) ---------------------------------------------------" if DEBUG==true
-    fields = {}
-    attrs = []
-
-    # Common fields
-    fields[:title] = self.title
-    fields[:description] = self.description
-
-    # Initialize properties values with NIL > no need as unmentionned properties ar just NIL'ed
-    # Property.order(:name).all do |prop|
-    #   fields["a_#{prop.name}"] = nil
-    # end
-
-    # Set the current value if found
-    values.includes(:property).all.each do |v|
-      # Access each property of this product
-      p = v.property
-      next if p.nil?
-
-      fields["p#{p.id}"] = v.value
-      attrs << p.name
-    end
-
-    # Debug fields
-    fields[ES_STAMP] = self.updated_at.to_i
-    fields[ES_ATTR] = attrs.join(', ')
-    #fields[ES_DEBUG] = names.inspect
-    puts "es_update (#{self.id}) >> #{fields.inspect}" if DEBUG==true
-
-    # Submit update to ES
-    client = Elasticsearch::Client.new log: false
-    esreply = client.index index: 'items', type: 'item', id: self.id, body: fields
-
-    puts "es_update (#{self.id}) << #{esreply.inspect}" if DEBUG==true
-
-    return esreply
+    ElasticSearchEngine.push_product(self)
   end
 
 end
