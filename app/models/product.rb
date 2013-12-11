@@ -11,23 +11,25 @@ class Product < ActiveRecord::Base
     update_attribute(:description, 'random '+rand(1000).to_s)
   end
 
-  def es_fields param1
-      # Props can be a grouped array or a query result
-      props = param1.to_a
+  def es_fields props = nil
+    # Init
+    properties = {}
+    fields = {}
 
-      # Common and debug fields
-      fields = {}
-      fields[ES_STAMP] = self.updated_at.to_i
-      fields[:title] = self.title
-      fields[:description] = self.description[0..50]
+    # Handle properties if any, they can be a grouped array or a query result
+    props.to_a.each do |pp|
+      #puts "- #{pp.inspect}"
+      product_properties
+      properties["p#{pp.property_id}"] = pp[:fvalue]
+    end unless props.nil?
 
-      # Handle properties if any
-      props.each do |pp|
-        #puts "- #{pp.inspect}"
-        fields["p#{pp.property_id}"] = pp[:fvalue]
-      end
-
-    return fields
+    # Build and return final hash
+    return {
+      title: self.title,
+      description: self.description[0..50],
+      (ES_PROPERTIES) => properties,
+      (ES_STAMP) => self.updated_at.to_i
+      }
   end
 
   def es_fetch_stamp

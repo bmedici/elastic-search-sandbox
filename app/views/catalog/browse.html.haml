@@ -1,14 +1,17 @@
 - @result.each do |result|
+  - source = result[ES_SOURCE] || {}
+  - props = source[ES_PROPERTIES] || {}
   .product
-    - result[ES_SOURCE].delete ES_STAMP
-    - result[ES_SOURCE].delete ES_ATTR
-
-    .label.label-default= result[ES_SCORE]
-    .label.label-info= result[ES_TYPE]
-    .label.label-primary= result[ES_ID]
+    .pull-right
+      .label.label-primary= result[ES_ID]
+      .label.label-default= result[ES_SCORE]
+    %b= source['title']
+    %br
+    %i= source['description']
+    %br
 
     .properties
-      - result[ES_SOURCE].each do |key, val|
+      - props.each do |key, val|
         %b=key
         = truncate(val.to_s, length: 30, omission: '...')
         %br
