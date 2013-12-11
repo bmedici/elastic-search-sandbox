@@ -34,22 +34,18 @@ class ElasticSearchEngine
     return if operations.size.zero?
 
     # Submit update to ES
-    client = Elasticsearch::Client.new log: false
-    #return operations
-    esreply = client.bulk index: ES_INDEX, type: ES_TYPE, refresh: false, body: operations
+    esreply = ES_CLIENT.bulk index: ES_INDEX, type: ES_TYPE, refresh: false, body: operations
   end
 
 
   def self.get_product(product_id)
     # Submit query to ES
-    client = Elasticsearch::Client.new log: true
-    return client.get_source index: ES_INDEX, type: ES_TYPE, id: product_id #rescue nil
+    return ES_CLIENT.get_source index: ES_INDEX, type: ES_TYPE, id: product_id #rescue nil
   end
   
   def self.get_products(ids)
     # Submit query to ES
-    client = Elasticsearch::Client.new log: true
-    reply = client.mget index: ES_INDEX, type: ES_TYPE, body: { ids: ids }
+    reply = ES_CLIENT.mget index: ES_INDEX, type: ES_TYPE, body: { ids: ids }
 
     # If response is weird, just exit
     return [] if reply['docs'].nil?
@@ -70,7 +66,6 @@ class ElasticSearchEngine
     return items
   end
 
-
   def self.push_product(product)
     log :push_product,  "(#{product.id})"
 
@@ -85,22 +80,24 @@ class ElasticSearchEngine
     fields = product.es_fields(pps)
 
     # Submit update to ES
-    client = Elasticsearch::Client.new log: false
     log :push_product, "(#{product.id}) >> #{fields.inspect}"
-    esreply = client.index index: ES_INDEX, type: ES_TYPE, id: product.id, body: fields
+    esreply = ES_CLIENT.index index: ES_INDEX, type: ES_TYPE, id: product.id, body: fields
 
     log :push_product, "(#{product.id}) << #{esreply.inspect}"
 
     return esreply
   end
 
+  def self.listall(max)
+    ES_CLIENT.search index: ES_INDEX, body: {}, size: max
+  end
+
 protected
 
   def self.log function, msg=nil
-    #return unless DEBUG==true
+    return unless DEBUG==true
     msg ||= "---------------------------------------------------"
     puts "#{function} | #{msg}" 
-    #Rails.logger.info "#{method} | f#{function} | #{msg}" 
   end 
 
 end

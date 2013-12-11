@@ -4,7 +4,6 @@ class ProductsController < ApplicationController
   def index
     # all products from db
     @products = Product.limit(ES_LIMIT_TABLE).all
-    client = Elasticsearch::Client.new log: true
 
     # Collect ID's and get status in ES
     product_ids = @products.collect(&:id)
